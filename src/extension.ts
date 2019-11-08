@@ -32,7 +32,7 @@ export async function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 
-async function getFileList(uri: vscode.Uri): Promise<string[]>{
+export async function getFileList(uri: vscode.Uri): Promise<string[]>{
 	let fullFileList = []
 	const direcAllContents = await vscode.workspace.fs.readDirectory(uri)
 	const direcFileList = direcAllContents
@@ -50,12 +50,12 @@ async function getFileList(uri: vscode.Uri): Promise<string[]>{
 	return fullFileList
 }
  
-function getMatchingFiles(originalFile: string, fileList: string[]){
+export function getMatchingFiles(originalFile: string, fileList: string[]){
 	const originalStrippedFileName = stripFileName(originalFile)
 	const matches = fileList.filter(file => stripFileName(file) === originalStrippedFileName)
 	return matches.filter(match => match !== originalFile )
 }
 
-function stripFileName(fullFilename:string):string{
+export function stripFileName(fullFilename:string):string{
 	return fullFilename.replace(/^.*[\\\/]/, '').split('.')[0]
 }
