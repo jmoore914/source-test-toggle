@@ -6,6 +6,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		if(editor){
 			const openFile = editor.document.fileName
 			const rootFolderUri = vscode.workspace.workspaceFolders![0].uri
+			test()
 			const fileList = await getFileList(rootFolderUri)
 			const matches = getMatchingFiles(openFile, fileList)
 			if(matches.length === 0){
@@ -53,9 +54,26 @@ export async function getFileList(uri: vscode.Uri): Promise<string[]>{
 export function getMatchingFiles(originalFile: string, fileList: string[]){
 	const originalStrippedFileName = stripFileName(originalFile)
 	const matches = fileList.filter(file => stripFileName(file) === originalStrippedFileName)
-	return matches.filter(match => match !== originalFile )
+	const testKeywords =  vscode.workspace.getConfiguration('sourceTestToggle').testKeywords
+	const isTestFile = testKeywords.some((testKeyword: string) => {
+		return originalFile.includes(testKeyword)
+	})
+	const filteredMatches = isTestFile ?
+		matches.filter(match => testKeywords.every((testKeyword: string) => {
+			return !match.includes(testKeyword)
+		})) :
+		matches.filter(match => testKeywords.some((testKeyword: string) => {
+			return match.includes(testKeyword)
+		}))
+	
+	return filteredMatches
 }
 
 export function stripFileName(fullFilename:string):string{
 	return fullFilename.replace(/^.*[\\\/]/, '').split('.')[0]
+}
+
+export function test(){
+	const settings = vscode.workspace.getConfiguration('sourceTestToggle')
+	console.log(settings)
 }

@@ -25,6 +25,21 @@
 		"keybindings": {
 			"command": "extension.sourceTestToggle",
 			"key": "ctrl+alt+t"
+		},
+		"configuration": {
+			"type": "object",
+			"title": "Source/Test Toggle",
+			"properties": {
+				"sourceTestToggle.testKeywords": {
+					"type": "array",
+					"default": [
+						"spec",
+						"test"
+					],
+					"description": "Keywords in test file names",
+					"scope": "window"
+				}
+			}
 		}
 	},
 	"scripts": {
