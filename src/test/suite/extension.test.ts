@@ -19,8 +19,8 @@ suite('Extension Test Suite', () => {
 			'path/to/file2.js',
 			'path/to/file1.spec.js',
 			'path/to/file1.test.js',
-		'otherPath/to/file1.js',
-		'otherPath/to/file2.spec.js']
+			'otherPath/to/file1.js',
+			'otherPath/to/file2.spec.js']
 		assert.deepEqual(
 			getMatchingFiles('path/to/file1.js', fileList),
 			['path/to/file1.spec.js','path/to/file1.test.js'])
