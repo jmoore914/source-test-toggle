@@ -38,6 +38,12 @@
 					],
 					"description": "Keywords in test file names",
 					"scope": "window"
+				},
+				"sourceTestToggle.exclude": {
+					"type": "array",
+					"default": [
+						"node_modules"
+					]
 				}
 			}
 		}

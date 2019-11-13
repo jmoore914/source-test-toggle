@@ -35,15 +35,17 @@ export function deactivate() {}
 
 export async function getFileList(uri: vscode.Uri): Promise<string[]>{
 	let fullFileList = []
+	const exclude = vscode.workspace.getConfiguration('sourceTestToggle').exclude
 	const direcAllContents = await vscode.workspace.fs.readDirectory(uri)
-	const direcFileList = direcAllContents
-		.filter(fileType => fileType[1]===1)
-		.map(fileType => uri.fsPath + '\\' + fileType[0])
+	const direcFilteredContents = direcAllContents.filter(item => !exclude.includes(item[0]))
+	const direcFileList = direcFilteredContents
+		.filter(item => item[1]===1)
+		.map(item => uri.fsPath + '\\' + item[0])
 	fullFileList.push(...direcFileList)
-	const direcSubdirecList = direcAllContents
-		.filter(fileType => fileType[1]===2)
-		.filter(fileType => fileType[0] !== 'node_modules')
-		.map(fileType => vscode.Uri.file(uri.fsPath + '\\' + fileType[0]))
+	const direcSubdirecList = direcFilteredContents
+		.filter(item => item[1]===2)
+		.filter(item => item[0] !== 'node_modules')
+		.map(item => vscode.Uri.file(uri.fsPath + '\\' + item[0]))
 	await Promise.all(direcSubdirecList.map(async (direc) => {
 		const subdirecFileList = await getFileList(direc)
 		fullFileList.push(...subdirecFileList)
@@ -71,9 +73,4 @@ export function getMatchingFiles(originalFile: string, fileList: string[]){
 
 export function stripFileName(fullFilename:string):string{
 	return fullFilename.replace(/^.*[\\\/]/, '').split('.')[0]
-}
-
-export function test(){
-	const settings = vscode.workspace.getConfiguration('sourceTestToggle')
-	console.log(settings)
 }
