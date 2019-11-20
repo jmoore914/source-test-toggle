@@ -42,7 +42,10 @@
 				"sourceTestToggle.exclude": {
 					"type": "array",
 					"default": [
-						"node_modules"
+						"node_modules",
+						".git",
+						".vscode",
+						"dist"
 					]
 				}
 			}

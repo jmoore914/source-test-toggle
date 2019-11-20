@@ -6,7 +6,6 @@ export async function activate(context: vscode.ExtensionContext) {
 		if(editor){
 			const openFile = editor.document.fileName
 			const rootFolderUri = vscode.workspace.workspaceFolders![0].uri
-			test()
 			const fileList = await getFileList(rootFolderUri)
 			const matches = getMatchingFiles(openFile, fileList)
 			if(matches.length === 0){
